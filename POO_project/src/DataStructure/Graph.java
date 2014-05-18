@@ -5,13 +5,10 @@ import java.util.Set;
 public class Graph {
 	Set<Node> Nodes;
 	Set<Edge> Edges;
-	
-	
 }
 
 class Node {
 	int index;
-	
 }
 
 class Edge {

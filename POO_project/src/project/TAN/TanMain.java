@@ -19,8 +19,8 @@ public class TanMain {
 		
 		TAN tan = new TAN(trainSet);
 		
-		//createCounts();
-		//fillCounts();
+		createCounts();
+		fillCounts();
 		System.err.print("end.");
 	}
 	
@@ -65,8 +65,10 @@ public class TanMain {
 					}
 				}
 			}
+			System.err.print("classvalue-> tables created");
 		}
 		
+		System.err.print("classvalue-> tables created");
 		
 //		int n = trainSet.getNbrOfVariables();
 //		for (int c = 0; c < trainSet.getS(); c++) {
