@@ -65,7 +65,7 @@ loop1:	while( (c=super.read()) != '\r' )
 		
 		// read the trains
 		while(c!=-1){
-loop2:		while( (c=super.read()) != '\r' )
+			while( (c=super.read()) != '\r' )
 			{
 				// 
 				if (c==-1){
@@ -78,19 +78,13 @@ loop2:		while( (c=super.read()) != '\r' )
 				// concatenates the characters of the attributes into a string
 				if(c!=','){
 					tmpname = new StringBuilder(tmpname).append((char)c).toString();
-					continue loop2;
+					continue;
 				}
 				
 				a=Integer.parseInt(tmpname);
 				
 				// process attributes here...
-				
-
-				// test the git hub lkashdlsajdlsakd
-
-				// test the git hub ufjhgfju
-
-				
+								
 				
 				//... until here.
 				
@@ -98,7 +92,7 @@ loop2:		while( (c=super.read()) != '\r' )
 				tmpname="";
 				
 				// continue to iterate on the first line loop
-				continue loop2;
+				continue;
 			}
 		
 			n_trains++;
@@ -115,8 +109,10 @@ loop2:		while( (c=super.read()) != '\r' )
 
 public static void main (String[] args){
 	
-	try{
-		Reader src = new CountCharReader(new FileReader(args[0]));
+	//try{
+		CsvReader.Read(args[0]);
+		
+		/*Reader src = new CountCharReader(new FileReader(args[0]));
 		
 		// reads the whole file
 		src.read();
@@ -125,13 +121,13 @@ public static void main (String[] args){
 		System.out.println("Number of trains found = " + ((CountCharReader)src).n_trains);
 		System.out.println("Number of attributes found = " + ((CountCharReader)src).N);
 		
-		src.close();
+		src.close();*/
 	
-	} catch(IOException e){
+	//} catch(IOException e){
 		
 		// if file does not exist
 		
-	}
+	//}
 }
 
 

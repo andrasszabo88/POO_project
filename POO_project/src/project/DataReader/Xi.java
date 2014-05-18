@@ -1,5 +1,7 @@
 package project.DataReader;
 
+import project.TAN.TAN;
+
 public class Xi {
 	
 	protected String name;
