@@ -1,6 +1,6 @@
 package project.DataReader;
 
-import project.TAN.TAN;
+import project.TAN.TanMain;
 
 public class Xi {
 	

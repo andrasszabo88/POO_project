@@ -1,6 +1,6 @@
 package DataStructure;
 
-import project.TAN.TAN;
+import project.TAN.TanMain;
 
 public class TrainEntry {
 	private int[] attributes;
