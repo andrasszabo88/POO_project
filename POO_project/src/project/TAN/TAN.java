@@ -6,12 +6,14 @@ import java.util.Map;
 
 import DataStructure.Count;
 import DataStructure.TrainDataSet;
+import DataStructure.Graph;
 
 public class TAN {
 	TrainDataSet trainSet;
 	
 	double[][] weights;
 	
+	Graph graph;
 	
 	public int RootIndex;
 	
@@ -26,7 +28,7 @@ public class TAN {
 	public TAN(TrainDataSet trainSet) {
 		this.trainSet = trainSet;
 		
-		
+		this.graph = new Graph();
 		
 //		Random random= new Random();
 		int n = trainSet.getNbrOfVariables();
@@ -55,7 +57,8 @@ public class TAN {
 		weights = new double[n][n];
 		for (int i = 0; i < n-1; i++) {
 			for (int j = i+1; j < n; j++) {
-				weights[i][j] = calcWeights(i, j);
+				weights[i][j] = calcWeightsMDL(i, j);
+				
 				System.out.print(weights[i][j]+" ");
 			}
 			System.out.println();
@@ -65,10 +68,17 @@ public class TAN {
 		
 	}
 	
+	private double calcWeightsMDL(int a, int b) {
+		double LLScore = calcWeightsLL(a, b);
+		double numerador = trainSet.getS() * ((trainSet.getRi(a)-1)*(trainSet.getRi(b)-1));
+		
+		double MDLScore = LLScore - ((double)numerador / 2) * Math.log(trainSet.getN());
+		return MDLScore;
+	}
 	/*
 	 * Calculate the weight of the edge between node a and b 
 	 */
-	private double calcWeights(int a, int b) {
+	private double calcWeightsLL(int a, int b) {
 		double sum=0;
 		
 		int ri=trainSet.getRi(a);
@@ -95,12 +105,21 @@ public class TAN {
 						}
 					}
 					
+					
+					
 					int[] XI = trainSet.getXi(a);
 					for (int i = 0; i < XI.length; i++) {
 						if (XI[i]==k && classifiers[i]==c)
 							NJikc++;
 					}
 					
+//					for (int i = 0; i < rii; i++) {
+//						NJikc+=countForC.getNijkc(a, b, i, k);
+//					}
+					
+//					for (int i = 0; i < ri; i++) {
+//						NKijc+=countForC.getNijkc(a, b, j, i);
+//					}
 					NKijc = countForC.getNKijc(a, b, j);
 					
 					double multiplier = (double)Nijkc / trainSet.getN();
