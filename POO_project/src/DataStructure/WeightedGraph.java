@@ -8,7 +8,8 @@ import java.util.Random;
 import java.util.Set;
 
 
-public class WeightedGraph extends Graph {
+public class WeightedGraph {
+	
 	List<WeightedEdge> edges;
 	
 	double[][] weights;
@@ -16,7 +17,13 @@ public class WeightedGraph extends Graph {
 	Set<Integer> nodes;
 	List<Integer> nodesList;
 	public WeightedGraph() {
-		nodes = new HashSet<Integer>(); 
+		nodes = new HashSet<Integer>();
+		edges = new ArrayList<WeightedEdge>();
+	}
+	
+	public void addEdge(WeightedEdge edge) {
+		nodes.add(edge.n1); nodes.add(edge.n2);
+		edges.add(edge);
 	}
 	
 	public void addEdge(int n1, int n2, double weight) {
@@ -34,7 +41,7 @@ public class WeightedGraph extends Graph {
 	
 	
 	
-	public void RunPrim() {
+	public List<WeightedEdge> RunPrim() {
 		nodesList = new ArrayList<Integer>(nodes);
 		Random rnd = new Random();
 		
@@ -42,6 +49,7 @@ public class WeightedGraph extends Graph {
 		K = new ArrayList<WeightedEdge>();
 		U = new ArrayList<Integer>();
 		Close = new int[nodes.size()];
+		ClosestWeight = new double[nodes.size()];
 		
 		int node = nodesList.get(rnd.nextInt(nodes.size()));
 		// first element in U
@@ -49,13 +57,28 @@ public class WeightedGraph extends Graph {
 				
 		Set<Integer> tempSet = new HashSet<Integer>(U);
 		
-		while (!tempSet.containsAll(nodes) && !nodes.containsAll(tempSet)) {
+		while (!tempSet.containsAll(nodes)) {
+			
 			int maxIdx = selectMaximumFromClosest();
+			
+			int nodeInsideU = Close[maxIdx];
+			
+			for (int i = 0; i < edges.size(); i++) {
+				WeightedEdge e = edges.get(i);
+				if ((e.getN1()==nodeInsideU && e.getN2()==maxIdx) ||
+					(e.getN1()==maxIdx && e.getN2()==nodeInsideU)) {
+					K.add(e);
+				}
+			}
+			
 			U.add(maxIdx);
+			
 			update(maxIdx);
 			
 			tempSet=new HashSet<Integer>(U);
 		}
+		
+		return K;
 	}
 	
 	// the closest node in U for each node
@@ -71,10 +94,13 @@ public class WeightedGraph extends Graph {
 		U.add(node);
 		for (int i = 0; i < nodesList.size(); i++) {
 			int n1 = nodesList.get(i);
-			if (U.contains(n1)) continue;
+			if (U.contains(n1)) {
+				Close[n1] = -1;
+				ClosestWeight[n1] = -1;
+			}
 			for (int j = 0; j < edges.size(); j++) {
 				WeightedEdge edge = edges.get(j);
-				if ((edge.n1==n1 && edge.n2==node) || (edge.n2==n1 && edge.n1==node)) {
+				if ((edge.getN1()==n1 && edge.getN2()==node) || (edge.getN2()==n1 && edge.getN1()==node)) {
 					Close[n1]=node;
 					ClosestWeight[n1] = edge.getWeight();
 				}
@@ -98,34 +124,19 @@ public class WeightedGraph extends Graph {
 	 */
 	private void update(int node) {
 		Close[node]=-1;
-		
-		for (int i = 0; i < edges.size(); i++) {
-			
-		}
+		ClosestWeight[node]=-1;
 		
 		for (int i = 0; i < Close.length; i++) {
 			if (weights[i][node]>ClosestWeight[i]) {
 				Close[i]=node;
 				ClosestWeight[i]=weights[i][node];
 			} else {
-			if (weights[node][i]>ClosestWeight[i]) {
-				Close[i]=node;
-				ClosestWeight[i]=weights[node][i];
+				
+				if (weights[node][i]>ClosestWeight[i]) {
+					Close[i]=node;
+					ClosestWeight[i]=weights[node][i];
+				}
 			}
 		}
-		
 	}
-	
-				
-		
-	
-	
-	 
-	
-	
-	
-	
-	
-	
-	
 }

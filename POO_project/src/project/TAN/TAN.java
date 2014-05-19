@@ -2,11 +2,12 @@ package project.TAN;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import DataStructure.Count;
-import DataStructure.Graph;
+//import DataStructure.Graph;
 import DataStructure.TrainDataSet;
 import DataStructure.WeightedEdge;
 import DataStructure.WeightedGraph;
@@ -16,7 +17,7 @@ public class TAN {
 	
 	double[][] weights;
 	
-	Graph graph;
+	WeightedGraph graph;
 	
 	public int RootIndex;
 	
@@ -31,7 +32,7 @@ public class TAN {
 	public TAN(TrainDataSet trainSet) {
 		this.trainSet = trainSet;
 		
-		this.graph = new Graph();
+		this.graph = new WeightedGraph();
 		
 //		Random random= new Random();
 		int n = trainSet.getNbrOfVariables();
@@ -70,8 +71,15 @@ public class TAN {
 		}
 		
 		((WeightedGraph)graph).passWeightMatrix(weights);
-		List<WeightedEdge> edges = graph.getSortedEdges();
-		System.err.print("weights calculated");
+		//List<WeightedEdge> edges = graph.getSortedEdges();
+		
+		
+		System.err.println("weights calculated");
+		
+		List<WeightedEdge> spanningTree = graph.RunPrim();
+		for (WeightedEdge edge:spanningTree) {
+			System.err.println("("+ edge.getN1()+ ";" +edge.getN2()+"): "+ edge.getWeight());
+		}
 		
 	}
 	

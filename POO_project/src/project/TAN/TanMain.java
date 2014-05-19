@@ -20,7 +20,7 @@ public class TanMain {
 		TAN tan = new TAN(trainSet);
 		
 		
-//		System.err.print("end.");
+		System.err.print("end.");
 	}
 	
 	
