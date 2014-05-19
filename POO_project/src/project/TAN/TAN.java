@@ -2,11 +2,14 @@ package project.TAN;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import DataStructure.Count;
-import DataStructure.TrainDataSet;
 import DataStructure.Graph;
+import DataStructure.TrainDataSet;
+import DataStructure.WeightedEdge;
+import DataStructure.WeightedGraph;
 
 public class TAN {
 	TrainDataSet trainSet;
@@ -57,13 +60,17 @@ public class TAN {
 		weights = new double[n][n];
 		for (int i = 0; i < n-1; i++) {
 			for (int j = i+1; j < n; j++) {
-				weights[i][j] = calcWeightsMDL(i, j);
-				
-				System.out.print(weights[i][j]+" ");
+				weights[i][j] = calcWeightsLL(i, j);
+				WeightedEdge e = new WeightedEdge(i, j, calcWeightsLL(i, j));
+				graph.addEdge(e);
+				System.out.print(e.getWeight()+" ");
 			}
 			System.out.println();
-			
+		
 		}
+		
+		((WeightedGraph)graph).passWeightMatrix(weights);
+		List<WeightedEdge> edges = graph.getSortedEdges();
 		System.err.print("weights calculated");
 		
 	}
