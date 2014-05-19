@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides a variety of methods initialise and process the train data Nijkc, mainly creating the tables that store the Nijkc
+ *
+ */
 public class Count {
 	public int Classifier;
 	
@@ -12,6 +16,11 @@ public class Count {
 	
 	TrainDataSet trainSet;
 	
+	/**
+	 * Constructor
+	 * @param c
+	 * @param trainSet
+	 */
 	public Count(int c, TrainDataSet trainSet) {
 		this.Classifier=c;
 		this.trainSet = trainSet;
@@ -20,12 +29,23 @@ public class Count {
 		fillCounts();
 	}
 	
+	/**
+	 * Returns the counts if this node is the tree root
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public int getCountFromEmptyConf(int i, int j) {
 		return -1;
 	}
 	
 	
-	// 
+	/**
+	 * Returns the number of tables needed to store the alpha values for the graph
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public int getTableNumber(int i, int j) {
 		int n = trainSet.getNbrOfVariables();
 		int tableCounter = 0;
@@ -40,7 +60,14 @@ public class Count {
 		return -1;
 	}
 	
-	// values for node i.
+	/**
+	 * Returns the counting Nijkc element given the parameters
+	 * @param i
+	 * @param ii
+	 * @param j
+	 * @param k
+	 * @return
+	 */
 	public int getNijkc(int i, int ii, int j, int k) {
 		int t = getTableNumber(i, ii);
 		int[][] table = counts.get(t);
@@ -48,6 +75,13 @@ public class Count {
 		
 	}
 	
+	/**
+	 * Returns the counting N^Kjkc element given the parameters
+	 * @param i
+	 * @param ii
+	 * @param j
+	 * @return
+	 */
 	public int getNKijc(int i, int ii, int j) {
 		int t = getTableNumber(i, ii);
 		int[][] table = counts.get(t);
@@ -59,7 +93,9 @@ public class Count {
 		return sum;
 	}
 	
-	
+	/**
+	 * Creates and initialises the tables that store the countings for each node's empty configurations
+	 */
 	private void createAndFillEmptyConf() {
 		emptyConf=new ArrayList<int[]>();
 		int[] classifiers = trainSet.getClassifiers();
@@ -77,7 +113,10 @@ public class Count {
 		}
 		
 	}
-
+	
+	/**
+	 * Creates the tables that store the countings Nijkc
+	 */
 	private void createCounts() { 
 		counts = new ArrayList<int[][]>();
 		int n = trainSet.getNbrOfVariables();
@@ -96,6 +135,9 @@ public class Count {
 		
 	}
 	
+	/**
+	 * Fills the tables that store the countings Nijkc with the correct counting values
+	 */
 	private void fillCounts() {
 		for (int i = 0; i < trainSet.getN(); i++) {
 			TrainEntry entry = trainSet.getTrainEntry(i);
