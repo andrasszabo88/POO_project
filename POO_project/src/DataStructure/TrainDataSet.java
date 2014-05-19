@@ -2,41 +2,67 @@ package DataStructure;
 
 import java.util.ArrayList;
 
-// use the collection interface!!!
+/**
+ * Provides methods to retrieve information from the various train entries
+ *
+ */
 public class TrainDataSet {
 	
 	ArrayList<TrainEntry> trainSet;
 
 	int[] maxValues;
 	
+	/**
+	 * constructor
+	 */
 	public TrainDataSet() {
 
 		trainSet = new ArrayList<TrainEntry>();
 	}
 	
+	/**
+	 * Returns the whole entries of the train file in a TraindataSet object
+	 * @param entries
+	 */
 	public TrainDataSet(ArrayList<TrainEntry> entries) {
 		this.trainSet = entries;
 	}
 	
+	/**
+	 * Returns the number of possible values of the attribute Xi
+	 * @param i
+	 * @return value of ri
+	 */
 	public int getRi(int i) {
 		return maxValues[i]+1;
 	}
 	
+	/**
+	 * Returns the number of possible values of the class attribute
+	 * @return value of s
+	 */
 	public int getS() {
 		return maxValues[maxValues.length-1]+1;
 	}
 	
+	/**
+	 * Returns the total number of train entries
+	 * @return value of N
+	 */
 	public int getN() {
 		return trainSet.size();
 	}
 	
-	// number of attributes
+	/**
+	 * Returns the total number of attributes
+	 * @return value of n
+	 */
 	public int getNbrOfVariables() {
 		return maxValues.length-1;
 	}
 	
 	/**
-	 * 
+	 * Adds a train entry read from the file to the ArrayList that contains all the entries
 	 * @param trainEntry
 	 */
 	public void addTrainEntry(TrainEntry trainEntry) {
@@ -63,7 +89,7 @@ public class TrainDataSet {
 	/**
 	 * Returns all train values of the random variable Xi.
 	 * @param i
-	 * @return 
+	 * @return Xi vector
 	 */
 	public int[] getXi(int i) {
 		int[] returnValue = new int[trainSet.size()];
@@ -77,7 +103,7 @@ public class TrainDataSet {
 	
 	/**
 	 * Returns all classifiers of the trainset.
-	 * @return 
+	 * @return C vector
 	 */
 	public int[] getClassifiers() {
 		int[] returnValue = new int[trainSet.size()];

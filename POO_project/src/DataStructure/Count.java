@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Provides a variety of methods initialise and process the train data Nijkc, mainly creating the tables that store the Nijkc
- *
+ * Provides access to the TrainDataSet methods and a variety of methods to
+ * initialise and process the train data Nijkc, mainly creating the tables that store the Nijkc
  */
 public class Count {
 	public int Classifier;
