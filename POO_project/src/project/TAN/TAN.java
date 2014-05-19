@@ -4,45 +4,29 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import DataStructure.Count;
 import DataStructure.TrainDataSet;
-import DataStructure.TrainEntry;
 
 public class TAN {
 	TrainDataSet trainSet;
+	
+	double[][] weights;
+	
 	
 	public int RootIndex;
 	
 	public Map<Integer, HashSet<Integer>> ParentNodes = new HashMap<Integer, HashSet<Integer>>();
 	
-	// parentConfigurations
-	private void firstParentConfiguration() {
-		for (int i = 0; i < trainSet.getNbrOfVariables(); i++) {
-			
-		}
-	}
+	public Count[] counts;
 	
-	/**
-	 * Returns with the number of instances (occurrences) in the data T where the variable Xi
-	 * takes its k-th value x-ik and the class variable takes its c-th value.
-	 * @param i The index of the random variable: X(i);
-	 * @param k The specified value what should be taken by the variable in the entry..
-	 * @param c The specified value of the class variable.
-	 */
-	private int getNijkcForFirstParent(int i, int k, int c) {
-		int retVal = 0;
-		for(int m = 0; m<trainSet.getN(); m++) {
-			TrainEntry entry = trainSet.getTrainEntry(m); 
-			if (entry.getXi(i)==k && entry.getClassifier()==c) {
-				retVal++;
-			}
-		}
-		
-		return retVal;
+	public Count getCountForClassifier(int c) {
+		return counts[c];
 	}
-	
 	
 	public TAN(TrainDataSet trainSet) {
 		this.trainSet = trainSet;
+		
+		
 		
 //		Random random= new Random();
 		int n = trainSet.getNbrOfVariables();
@@ -57,7 +41,82 @@ public class TAN {
 				}
 	//		}
 		}
+		
+		/*
+		 * Count the occurences of the possible values of variables 
+		 * 	matching with the specified classifier.
+		 */
+		counts = new Count[trainSet.getS()];
+		for (int c = 0; c < trainSet.getS(); c++) {
+			Count cnt = new Count(c, trainSet);
+			counts[c] = cnt;
+		}
+		
+		weights = new double[n][n];
+		for (int i = 0; i < n-1; i++) {
+			for (int j = i+1; j < n; j++) {
+				weights[i][j] = calcWeights(i, j);
+				System.out.print(weights[i][j]+" ");
+			}
+			System.out.println();
+			
+		}
+		System.err.print("weights calculated");
+		
 	}
 	
-	
+	/*
+	 * Calculate the weight of the edge between node a and b 
+	 */
+	private double calcWeights(int a, int b) {
+		double sum=0;
+		
+		int ri=trainSet.getRi(a);
+		int rii=trainSet.getRi(b);
+		
+		for (int j = 0; j < trainSet.getRi(b); j++) {
+			for (int k = 0; k < trainSet.getRi(a); k++) {
+				for (int c = 0; c < trainSet.getS(); c++) {
+					int Nijkc = 0;
+					int Nc = 0;
+					int NJikc = 0;
+					int NKijc = 0;
+					
+					Count countForC = getCountForClassifier(c);
+					
+					Nijkc = countForC.getNijkc(a, b, j, k);
+					
+					
+					int[] classifiers = trainSet.getClassifiers();
+					
+					for (int i = 0; i < classifiers.length; i++) {
+						if (classifiers[i]==c) {
+							Nc++;
+						}
+					}
+					
+					int[] XI = trainSet.getXi(a);
+					for (int i = 0; i < XI.length; i++) {
+						if (XI[i]==k && classifiers[i]==c)
+							NJikc++;
+					}
+					
+					NKijc = countForC.getNKijc(a, b, j);
+					
+					double multiplier = (double)Nijkc / trainSet.getN();
+					
+					double numerador=Nijkc*Nc;
+					double denominator = NJikc*NKijc;
+					double multiplied = (double)(numerador)/(denominator);
+					
+					double logarithm = Math.log(multiplied)/Math.log(2);
+					
+					if (!(multiplier==0 || numerador==0 || denominator==0))
+						sum+=multiplier*logarithm;
+				}
+			}
+		}
+		return sum;
+		
+	}
 }
