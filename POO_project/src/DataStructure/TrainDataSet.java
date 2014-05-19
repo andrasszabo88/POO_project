@@ -3,7 +3,7 @@ package DataStructure;
 import java.util.ArrayList;
 
 /**
- * Provides methods to retrieve information from the various train entries
+ * Provides methods to retrieve information from the TrainDataSet
  *
  */
 public class TrainDataSet {
@@ -87,7 +87,7 @@ public class TrainDataSet {
 	}
 	
 	/**
-	 * Returns all train values of the random variable Xi.
+	 * Returns all train values of the random variable Xi
 	 * @param i
 	 * @return Xi vector
 	 */
@@ -102,7 +102,7 @@ public class TrainDataSet {
 	}
 	
 	/**
-	 * Returns all classifiers of the trainset.
+	 * Returns all classifiers of the trainset
 	 * @return C vector
 	 */
 	public int[] getClassifiers() {
