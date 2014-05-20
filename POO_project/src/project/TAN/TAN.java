@@ -16,6 +16,9 @@ import DataStructure.WeightedEdge;
 import DataStructure.WeightedGraph;
 
 public class TAN {
+	
+	final double Nconst = 0.5;
+	
 	TrainDataSet trainSet;
 	
 	double[][] weights;
@@ -23,6 +26,11 @@ public class TAN {
 	WeightedGraph graph;
 	
 	public int RootIndex;
+	int[] ParentArray;
+	
+	public int getParent(int idx) {
+		return ParentArray[idx];
+	}
 	
 	public Map<Integer, HashSet<Integer>> ParentNodes = new HashMap<Integer, HashSet<Integer>>();
 	
@@ -101,8 +109,7 @@ public class TAN {
 			
 		}
 		
-		Random rnd = new Random();
-		int r = rnd.nextInt(trainSet.getNbrOfVariables());
+		
 		
 		List<TreeNode> treeNodes = new ArrayList<TreeNode>();
 		for(int i = 0; i<trainSet.getNbrOfVariables(); i++) {
@@ -131,14 +138,17 @@ public class TAN {
 			}
 		}
 		
+		Random rnd = new Random();
+		RootIndex = rnd.nextInt(trainSet.getNbrOfVariables());
 		
-		
-		TreeNode treeNode = treeNodes.get(r);
+		ParentArray = new int[trainSet.getNbrOfVariables()];
+		TreeNode treeNode = treeNodes.get(RootIndex);
 		treeNode.VisitNodes();
 		// direct graph
 		
 		for(TreeNode node : treeNodes) {
-			System.err.print(node.getParent());
+			ParentArray[node.Id]=node.getParent();
+			//System.err.print(node.getParent());
 		}
 	}
 	
@@ -162,7 +172,7 @@ public class TAN {
 			for (int k = 0; k < trainSet.getRi(a); k++) {
 				for (int c = 0; c < trainSet.getS(); c++) {
 					int Nijkc = 0;
-					int Nc = 0;
+					
 					int NJikc = 0;
 					int NKijc = 0;
 					
@@ -173,13 +183,7 @@ public class TAN {
 					
 					int[] classifiers = trainSet.getClassifiers();
 					
-					for (int i = 0; i < classifiers.length; i++) {
-						if (classifiers[i]==c) {
-							Nc++;
-						}
-					}
-					
-					
+					int Nc = getNc(c);
 					
 					int[] XI = trainSet.getXi(a);
 					for (int i = 0; i < XI.length; i++) {
@@ -211,5 +215,51 @@ public class TAN {
 		}
 		return sum;
 		
+	}
+
+	private int getNc(int c) {
+		int Nc=0;
+		int[] classifiers = trainSet.getClassifiers();
+		for (int i = 0; i < classifiers.length; i++) {
+			if (classifiers[i]==c) {
+				Nc++;
+			}
+		}
+		return Nc;
+	}
+	
+	public double getThetaIJKC(int i, int parentId, int j, int k, int c) {
+		Count countForC = getCountForClassifier(c);
+		double nijkc;
+		double nKijc;
+		
+		if (parentId==-1) {
+			nijkc = countForC.getNijkcForRoot(i, k);
+			nKijc = countForC.getNKijcForParent(i);
+		}
+		else {
+			//System.out.println(i+ " " + parentId + " "+ j+ " "+ k );
+			nijkc = countForC.getNijkc(i, parentId, j, k);
+			
+			nKijc = countForC.getNKijc(i, parentId, j);
+		}
+			
+		int ri = trainSet.getRi(i);
+		
+		double numerador = nijkc + Nconst;
+		double denominador = nKijc + ri*Nconst;
+		
+		return numerador/denominador;
+			
+		
+	}
+	
+	public double getThetaC(int c) {
+		double numerador = getNc(c) + Nconst;
+		double denominador = trainSet.getN() + trainSet.getS()* Nconst;
+		
+		return numerador/denominador;
+		
+	
 	}
 }

@@ -6,4 +6,14 @@ public class TestEntry {
 	public TestEntry(int[] entry) {
 		this.attributes = entry;
 	}
+	
+	public int getLength() {
+		return attributes.length;
+	}
+	
+	public int getXi(int i) {
+		return attributes[i];
+	}
+	
+	
 }

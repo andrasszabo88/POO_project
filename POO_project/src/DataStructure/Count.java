@@ -39,6 +39,12 @@ public class Count {
 		return -1;
 	}
 	
+	public int getNijkcForRoot(int i, int k) {
+		
+		int[] table = emptyConf.get(i);
+		return table[k];
+		
+	}
 	
 	/**
 	 * Returns the number of tables needed to store the alpha values for the graph
@@ -47,10 +53,16 @@ public class Count {
 	 * @return
 	 */
 	public int getTableNumber(int i, int j) {
+		
 		int n = trainSet.getNbrOfVariables();
 		int tableCounter = 0;
 		for (int l = 0; l < n - 1; l++) {
 			for (int l2 = l+1; l2 < n; l2++) {
+				if (j<i) {
+					if (l==j && l2==i) {
+						return tableCounter;
+					}
+				} else
 				if (l==i && l2==j) {
 					return tableCounter;
 				}
@@ -69,7 +81,12 @@ public class Count {
 	 * @return
 	 */
 	public int getNijkc(int i, int ii, int j, int k) {
+		
 		int t = getTableNumber(i, ii);
+		if (t<0 || t>= counts.size())
+		{
+			int[][] trararar = counts.get(t);
+		}
 		int[][] table = counts.get(t);
 		return table[k][j];
 		
@@ -88,7 +105,20 @@ public class Count {
 		
 		int sum=0;
 		for (int l = 0; l < trainSet.getRi(i); l++) {
+			if (l==11 || j==11) {
+				System.err.print("");
+			}
 			sum+=table[l][j];
+		}
+		return sum;
+	}
+	
+	public int getNKijcForParent(int i) {
+		int t[] = emptyConf.get(i);
+		
+		int sum=0;
+		for (int l = 0; l < trainSet.getRi(i); l++) {
+			sum+=t[l];
 		}
 		return sum;
 	}
@@ -101,13 +131,24 @@ public class Count {
 		int[] classifiers = trainSet.getClassifiers();
 		
 		for(int i = 0; i<trainSet.getNbrOfVariables(); i++) {
-			emptyConf.add(0, new int[trainSet.getRi(i)]);
+			int x = trainSet.getRi(i);
+			emptyConf.add(i, new int[x]);
 		}
 		
 		for (int i = 0; i < classifiers.length; i++) {
 			if (Classifier==classifiers[i]) {
 				for(int j = 0; j<trainSet.getNbrOfVariables(); j++) {
-					emptyConf.get(j)[trainSet.getXi(j)[i]]++;
+//					if (i==4 && j== 1) {
+//						System.err.println("i="+i+", j="+j);
+//					}
+					
+					int y[] = trainSet.getXi(j);
+					int z = y[i];
+//					if (i==4 && j== 1 && z==12) {
+//						System.err.println("i="+i+", j="+j+", z="+z);
+//					}
+					int[] array = emptyConf.get(j);
+					emptyConf.get(j)[z]++;
 				}
 			}
 		}
