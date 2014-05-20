@@ -1,14 +1,17 @@
 package project.TAN;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import DataStructure.Count;
 //import DataStructure.Graph;
 import DataStructure.TrainDataSet;
+import DataStructure.TreeNode;
 import DataStructure.WeightedEdge;
 import DataStructure.WeightedGraph;
 
@@ -76,10 +79,53 @@ public class TAN {
 		
 		System.err.println("weights calculated");
 		
+		
+		
 		List<WeightedEdge> spanningTree = graph.RunPrim();
 		for (WeightedEdge edge:spanningTree) {
 			System.err.println("("+ edge.getN1()+ ";" +edge.getN2()+"): "+ edge.getWeight());
+			
+			
 		}
+		
+		Random rnd = new Random();
+		int r = rnd.nextInt(trainSet.getNbrOfVariables());
+		
+		List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+		for(int i = 0; i<trainSet.getNbrOfVariables(); i++) {
+			treeNodes.add(new TreeNode(i));
+		}
+		
+		for(WeightedEdge e: spanningTree) {
+			int n1 = e.getN1();
+			int n2 = e.getN2();
+			
+			for(TreeNode node: treeNodes) {
+				if (node.Id == n1) {
+					for(TreeNode node2: treeNodes) {
+						if (node2.Id==n2) {
+							node.AddNode(node2);
+						}
+					}
+				} else 
+				if (node.Id == n2) {
+					for(TreeNode node2: treeNodes) {
+						if (node2.Id==n1) {
+							node.AddNode(node2);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
+		TreeNode treeNode = treeNodes.get(r);
+		treeNode.VisitNodes();
+		// direct graph
+		
+		
+		
 		
 	}
 	
