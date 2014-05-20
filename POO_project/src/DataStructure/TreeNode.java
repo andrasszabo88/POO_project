@@ -23,6 +23,10 @@ public class TreeNode {
 		Parent = i;
 	}
 	
+	public int getParent() {
+		return this.Parent;
+	}
+	
 	public void VisitNodes() {
 		//System.err.print(this.Id+"->");
 		for(TreeNode node : nodes) {

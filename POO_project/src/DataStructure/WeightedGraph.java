@@ -68,6 +68,7 @@ public class WeightedGraph {
 				if ((e.getN1()==nodeInsideU && e.getN2()==maxIdx) ||
 					(e.getN1()==maxIdx && e.getN2()==nodeInsideU)) {
 					K.add(e);
+					break;
 				}
 			}
 			
@@ -127,6 +128,7 @@ public class WeightedGraph {
 		ClosestWeight[node]=-1;
 		
 		for (int i = 0; i < Close.length; i++) {
+			if (U.contains(i)) continue;
 			if (weights[i][node]>ClosestWeight[i]) {
 				Close[i]=node;
 				ClosestWeight[i]=weights[i][node];

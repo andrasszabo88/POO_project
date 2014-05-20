@@ -32,7 +32,7 @@ public class TAN {
 		return counts[c];
 	}
 	
-	public TAN(TrainDataSet trainSet) {
+	public TAN(TrainDataSet trainSet, String score) {
 		this.trainSet = trainSet;
 		
 		this.graph = new WeightedGraph();
@@ -65,7 +65,20 @@ public class TAN {
 		for (int i = 0; i < n-1; i++) {
 			for (int j = i+1; j < n; j++) {
 				weights[i][j] = calcWeightsLL(i, j);
-				WeightedEdge e = new WeightedEdge(i, j, calcWeightsLL(i, j));
+				WeightedEdge e=null;
+				if (score.equalsIgnoreCase("ll")) {
+					e = new WeightedEdge(i, j, calcWeightsLL(i, j));
+				} else 
+					if (score.equalsIgnoreCase("mdl")) {
+						e = new WeightedEdge(i, j, calcWeightsMDL(i, j));
+					}  
+					
+				if (e==null) {
+					System.out.println("Please specify the score, it should be \"LL\" or \"MDL\".");
+					return;
+				}
+				
+				//WeightedEdge e = new WeightedEdge(i, j, calcWeightsLL(i, j));
 				graph.addEdge(e);
 				System.out.print(e.getWeight()+" ");
 			}
@@ -124,9 +137,9 @@ public class TAN {
 		treeNode.VisitNodes();
 		// direct graph
 		
-		
-		
-		
+		for(TreeNode node : treeNodes) {
+			System.err.print(node.getParent());
+		}
 	}
 	
 	private double calcWeightsMDL(int a, int b) {
