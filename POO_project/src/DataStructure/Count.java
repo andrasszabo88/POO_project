@@ -12,7 +12,7 @@ public class Count {
 	public int Classifier;
 	
 	ArrayList<int[]> emptyConf; 
-	ArrayList<int[][]> counts;
+	ArrayList<ArrayList<int[][]>> counts;
 	
 	TrainDataSet trainSet;
 	
@@ -82,12 +82,12 @@ public class Count {
 	 */
 	public int getNijkc(int i, int ii, int j, int k) {
 		
-		int t = getTableNumber(i, ii);
-		if (t<0 || t>= counts.size())
-		{
-			int[][] trararar = counts.get(t);
-		}
-		int[][] table = counts.get(t);
+		//int t = getTableNumber(i, ii);
+//		if (t<0 || t>= counts.size())
+//		{
+//			int[][] trararar = counts.get(t);
+//		}
+		int[][] table = counts.get(i).get(ii);
 		return table[k][j];
 		
 	}
@@ -100,14 +100,14 @@ public class Count {
 	 * @return
 	 */
 	public int getNKijc(int i, int ii, int j) {
-		int t = getTableNumber(i, ii);
-		int[][] table = counts.get(t);
+		//int t = getTableNumber(i, ii);
+		int[][] table = counts.get(i).get(ii);
 		
 		int sum=0;
 		for (int l = 0; l < trainSet.getRi(i); l++) {
-			if (l==11 || j==11) {
-				System.err.print("");
-			}
+//			if (l==11 || j==11) {
+//				System.err.print("");
+//			}
 			sum+=table[l][j];
 		}
 		return sum;
@@ -159,19 +159,21 @@ public class Count {
 	 * Creates the tables that store the countings Nijkc
 	 */
 	private void createCounts() { 
-		counts = new ArrayList<int[][]>();
+		counts = new ArrayList<ArrayList<int[][]>>();
 		int n = trainSet.getNbrOfVariables();
 
-		for (int i = 0; i < n - 1; i++) {
-			for (int j = i + 1; j < n; j++) {
+		for (int i = 0; i < n; i++) {
+			ArrayList<int[][]> temp = new ArrayList<int[][]>();
+			for (int j = 0; j < n; j++) {
 					int[][] table = new int[trainSet.getRi(i)][trainSet.getRi(j)];
 					for (int k = 0; k < trainSet.getRi(i); k++) {
 						for (int k2 = 0; k2 < trainSet.getRi(j); k2++) {
 							table[k][k2]=0;
 						}
 					}
-					counts.add(table);
+					temp.add(table);
 			}
+			counts.add(temp);
 		}
 		
 	}
@@ -189,11 +191,11 @@ public class Count {
 			int tableCounter = 0;
 			
 			int n = trainSet.getNbrOfVariables();
-			for (int j = 0; j < n - 1; j++) {
-				for (int k = j+1; k < n; k++) {
+			for (int j = 0; j < n; j++) {
+				for (int k = 0; k < n; k++) {
 					
 					/*((int[][])*/
-					counts.get(tableCounter++)[entry.getXi(j)][entry.getXi(k)]++;
+					counts.get(j).get(k)[entry.getXi(j)][entry.getXi(k)]++;
 					
 				}
 			}

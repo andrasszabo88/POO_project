@@ -140,7 +140,7 @@ public class TAN {
 		
 		Random rnd = new Random();
 		RootIndex = rnd.nextInt(trainSet.getNbrOfVariables());
-		
+		//RootIndex = 6;
 		ParentArray = new int[trainSet.getNbrOfVariables()];
 		TreeNode treeNode = treeNodes.get(RootIndex);
 		treeNode.VisitNodes();
