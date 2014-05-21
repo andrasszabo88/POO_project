@@ -33,7 +33,7 @@ public class TreeNode {
 			if (node.Id!=Parent) {
 				
 				node.setParent(this.Id);
-				System.err.println(this.Id+"->" + node.Id+";");
+				//System.err.println(this.Id+"->" + node.Id+";");
 				node.VisitNodes();
 			}
 		}

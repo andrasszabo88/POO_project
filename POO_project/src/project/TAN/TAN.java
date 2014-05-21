@@ -88,9 +88,9 @@ public class TAN {
 				
 				//WeightedEdge e = new WeightedEdge(i, j, calcWeightsLL(i, j));
 				graph.addEdge(e);
-				System.out.print(e.getWeight()+" ");
+				//System.out.print(e.getWeight()+" ");
 			}
-			System.out.println();
+			//System.out.println();
 		
 		}
 		
@@ -98,16 +98,16 @@ public class TAN {
 		//List<WeightedEdge> edges = graph.getSortedEdges();
 		
 		
-		System.err.println("weights calculated");
+		//System.err.println("weights calculated");
 		
 		
 		
 		List<WeightedEdge> spanningTree = graph.RunPrim();
-		for (WeightedEdge edge:spanningTree) {
-			System.err.println("("+ edge.getN1()+ ";" +edge.getN2()+"): "+ edge.getWeight());
-			
-			
-		}
+//		for (WeightedEdge edge:spanningTree) {
+//			System.err.println("("+ edge.getN1()+ ";" +edge.getN2()+"): "+ edge.getWeight());
+//			
+//			
+//		}
 		
 		
 		

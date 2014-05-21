@@ -42,7 +42,7 @@ public class TanMain {
 			System.out.println();
 		}
 		
-		System.err.print("end.");
+		//System.err.print("end.");
 	}
 	
 	private static int classify(double[] probalities) {
